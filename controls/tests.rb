@@ -1,5 +1,5 @@
 lxc_containers = input('lxc_containers')
-#puts input_object('lxc_mqtt').diagnostic_string
+puts input_object('lxc_containers').diagnostic_string
 
 control 'machines' do
   impact 1.0
@@ -20,24 +20,29 @@ end
 
 control 'packages' do
   impact 1.0
-  title 'Erstellen der LXC Maschinen'
-  desc 'Erstellen der Maschine'
+  title 'Software auf der LXC Maschinen'
+  desc 'Pakete auf der Maschine'
   lxc_containers.each do |machine|
-    describe package('mosquitto') do
-      it { should be_installed }
+    machine[:'apt'][:'name'].each do |package|
+      describe package(package) do
+        it { should be_installed }
+      end
     end
   end
 end
 
 control 'ports' do
   impact 1.0
-  title 'Erstellen der LXC Maschinen'
-  desc 'Erstellen der Maschine'
+  title 'Ports der LXC Maschinen'
+  desc 'Ports der Maschine'
   lxc_containers.each do |machine|
-    describe port(1883) do
-      it { should be_listening }
-      its('protocols') {should eq ['tcp', 'tcp6']}
-      its('addresses') {should eq ['0.0.0.0', '::']}
+    machine[:'ports'].each do |port|
+      puts port
+      describe port(port[:'listining']) do
+        it { should be_listening }
+        its('protocols') {should eq port[:'protocols']}
+        its('addresses') {should eq port[:'addresses']}
+      end
     end
   end
 end
@@ -47,10 +52,12 @@ control 'services' do
   title 'Erstellen der LXC Maschinen'
   desc 'Erstellen der Maschine'
   lxc_containers.each do |machine|
-    describe service('mosquitto') do
-      it { should be_installed }
-      it { should be_enabled }
-      it { should be_running }
+    machine[:'services'].each do |service|
+      describe service(service[:'name']) do
+        it { should be_installed }
+        it { should be_enabled }
+        it { should be_running }
+      end
     end
   end
 end

@@ -27,7 +27,7 @@ inputs:
       
       # Packages apt/npm
       apt: 
-      - name: 
+        name: 
           - 'mosquitto'
         # A list of package names, like `foo', or package specifier with
         # version, like `foo=1.0'. Name wildcards (fnmatch) like `apt*'
@@ -64,6 +64,6 @@ inputs:
           # type: str
 
       ports:
-        - listining: '1883'
+        - listining: 1883
           protocols: ["tcp", "tcp6"]
           addresses: ["0.0.0.0", "::"]
