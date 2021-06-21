@@ -1,0 +1,23 @@
+name: MQTT
+title: LXC Maschinen für mqtt
+maintainer: Michael Schaar
+copyright: Michael Schaar
+copyright_email: Michael.Schaar@schulen.nuernberg.de
+license: Apache-2.0
+summary: Ein LXC Umgebung für mqtt
+version: 0.1.0
+supports:
+  platform: linux
+inputs:
+- name: lxc_mqtt
+  type: Array
+  value:
+    - name: 'mqtt'
+      apt: 
+        - 'mosquitto'
+      service:
+        - 'mosquitto'
+      port:
+        - '1883'
+      protocols: ["tcp", "tcp6"]
+      addresses: ["0.0.0.0", "::"]
