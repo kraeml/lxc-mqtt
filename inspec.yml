@@ -9,15 +9,61 @@ version: 0.1.0
 supports:
   platform: linux
 inputs:
-- name: lxc_mqtt
+- name: lxc_containers
   type: Array
   value:
     - name: 'mqtt'
+      # Name of a container.
+      # type: str
+      state: started
+      # Define the state of a container.
+      # (Choices: started, stopped, restarted, absent, frozen,
+      # clone)[Default: started]
+      # type: str
+      template: ubuntu
+      # Name of the template to use within an LXC create.
+      # [Default: ubuntu]
+      # type: str
+      
+      # Packages apt/npm
       apt: 
-        - 'mosquitto'
-      service:
-        - 'mosquitto'
-      port:
-        - '1883'
-      protocols: ["tcp", "tcp6"]
-      addresses: ["0.0.0.0", "::"]
+      - name: 
+          - 'mosquitto'
+        # A list of package names, like `foo', or package specifier with
+        # version, like `foo=1.0'. Name wildcards (fnmatch) like `apt*'
+        # and version wildcards like `foo=1.0*' are also supported.
+        # (Aliases: package, pkg)[Default: (null)]
+        # elements: str
+        # type: list
+
+        state: present
+        # Indicates the desired package state. `latest' ensures that the
+        # latest version is installed. `build-dep' ensures the package
+        # build dependencies are installed. `fixed' attempt to correct a
+        # system with broken dependencies in place.
+        # (Choices: absent, build-dep, latest, present, fixed)[Default:
+        # present]
+
+
+      # Services
+      #
+      services:
+        - name: 'mosquitto'
+          # Name of the service.
+          # type: str
+          
+          enabled: null
+          # Whether the service should start on boot.
+          # *At least one of state and enabled are required.*
+          # [Default: (null)]
+          # type: bool
+
+          state: null
+          # *At least one of state and enabled are required.*
+          # (Choices: started, stopped)[Default: (null)]
+          # type: str
+
+      ports:
+        - listining: '1883'
+          protocols: ["tcp", "tcp6"]
+          addresses: ["0.0.0.0", "::"]

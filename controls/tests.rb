@@ -1,11 +1,11 @@
-lxc_machines = input('lxc_mqtt')
+lxc_containers = input('lxc_containers')
 #puts input_object('lxc_mqtt').diagnostic_string
 
 control 'machines' do
   impact 1.0
   title 'Erstellen der LXC Maschinen'
   desc 'Erstellen der Maschine'
-  lxc_machines.each do |machine|
+  lxc_containers.each do |machine|
     describe bash('sudo lxc-ls') do
       # Gefolgt von einem Whitespace
       its('stdout') { should match /#{machine[:'name']}\s+/ }
@@ -22,7 +22,7 @@ control 'packages' do
   impact 1.0
   title 'Erstellen der LXC Maschinen'
   desc 'Erstellen der Maschine'
-  lxc_machines.each do |machine|
+  lxc_containers.each do |machine|
     describe package('mosquitto') do
       it { should be_installed }
     end
@@ -33,7 +33,7 @@ control 'ports' do
   impact 1.0
   title 'Erstellen der LXC Maschinen'
   desc 'Erstellen der Maschine'
-  lxc_machines.each do |machine|
+  lxc_containers.each do |machine|
     describe port(1883) do
       it { should be_listening }
       its('protocols') {should eq ['tcp', 'tcp6']}
@@ -42,11 +42,11 @@ control 'ports' do
   end
 end
 
-control 'service' do
+control 'services' do
   impact 1.0
   title 'Erstellen der LXC Maschinen'
   desc 'Erstellen der Maschine'
-  lxc_machines.each do |machine|
+  lxc_containers.each do |machine|
     describe service('mosquitto') do
       it { should be_installed }
       it { should be_enabled }
