@@ -64,6 +64,6 @@ inputs:
           # type: str
 
       ports:
-        - listining: '1883'
+        - listining: 1883
           protocols: ["tcp", "tcp6"]
           addresses: ["0.0.0.0", "::"]
