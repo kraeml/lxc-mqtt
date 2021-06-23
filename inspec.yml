@@ -10,7 +10,7 @@ supports:
   platform: linux
 inputs:
 - name: lxc_containers
-  type: Array
+  #type: Array
   value:
     - name: 'mqtt'
       # Name of a container.
